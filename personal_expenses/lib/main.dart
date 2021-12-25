@@ -78,6 +78,38 @@ class _MyHomePageState extends State<MyHomePage> {
         days: 2,
       )),
     ),
+    Transaction(
+      id: 't3',
+      title: 'New Shoes3',
+      amount: 69.99,
+      date: DateTime.now().subtract(const Duration(
+        days: 1,
+      )),
+    ),
+    Transaction(
+      id: 't4',
+      title: 'Weekly Groceries3',
+      amount: 16.53,
+      date: DateTime.now().subtract(const Duration(
+        days: 2,
+      )),
+    ),
+    Transaction(
+      id: 't5',
+      title: 'New Shoes5',
+      amount: 69.99,
+      date: DateTime.now().subtract(const Duration(
+        days: 1,
+      )),
+    ),
+    Transaction(
+      id: 't6',
+      title: 'Weekly Groceries6',
+      amount: 16.53,
+      date: DateTime.now().subtract(const Duration(
+        days: 2,
+      )),
+    ),
   ];
 
   List<Transaction> get _recentTransactions => _userTransactions
@@ -112,25 +144,39 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final _appBar = AppBar(
+      title: const Text('Personal Expenses'),
+      actions: [
+        IconButton(
+          onPressed: () => _startAddNewTransaction(context),
+          icon: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+        )
+      ],
+    );
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Personal Expenses'),
-        actions: [
-          IconButton(
-            onPressed: () => _startAddNewTransaction(context),
-            icon: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-          )
-        ],
-      ),
+      appBar: _appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Chart(_recentTransactions),
-            TransactionList(_userTransactions, _deleteTransact),
+            SizedBox(
+              height: (MediaQuery.of(context).size.height -
+                      _appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.vertical) *
+                  0.3,
+              child: Chart(_recentTransactions),
+            ),
+            SizedBox(
+              height: (MediaQuery.of(context).size.height -
+                      _appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.vertical) *
+                  0.7,
+              child: TransactionList(_userTransactions, _deleteTransact),
+            ),
           ],
         ),
       ),
