@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:meals_app/dummy_data.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({Key? key}) : super(key: key);
+  const MealDetailScreen(this.toggleFavorite, this.isMealFavorite, {Key? key}) : super(key: key);
 
+  final Function toggleFavorite;
+  final Function isMealFavorite;
   static const routeName = '/meal-detail';
 
   Widget buildSectionTitle(BuildContext context, String text) => SizedBox(
@@ -33,56 +35,69 @@ class MealDetailScreen extends StatelessWidget {
     final mealId = ModalRoute.of(context)?.settings.arguments as String;
     final meal = dummyMeals.firstWhere((e) => e.id == mealId);
     return Scaffold(
-        appBar: AppBar(
-          title: Text(meal.title),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: 300.0,
-                width: double.infinity,
-                child: Image.network(
-                  meal.imageUrl,
-                  fit: BoxFit.cover,
-                ),
+      appBar: AppBar(
+        title: Text(meal.title),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 300.0,
+              width: double.infinity,
+              child: Image.network(
+                meal.imageUrl,
+                fit: BoxFit.cover,
               ),
-              const SizedBox(
-                height: 10.0,
-              ),
-              buildSectionTitle(context, 'Ingredients'),
-              buildContainer(
-                ListView.builder(
-                  itemBuilder: (context, index) => Card(
-                    color: Theme.of(context).colorScheme.secondary,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                      child: Text(meal.ingredients[index]),
-                    ),
+            ),
+            const SizedBox(
+              height: 10.0,
+            ),
+            buildSectionTitle(context, 'Ingredients'),
+            buildContainer(
+              ListView.builder(
+                itemBuilder: (context, index) => Card(
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    child: Text(meal.ingredients[index]),
                   ),
-                  itemCount: meal.ingredients.length,
                 ),
+                itemCount: meal.ingredients.length,
               ),
-              buildSectionTitle(context, 'Steps'),
-              buildContainer(
-                ListView.builder(
-                  itemBuilder: (context, index) => Column(
-                    children: [
-                      ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          child: Text('# ${index + 1}'),
-                        ),
-                        title: Text(meal.steps[index]),
+            ),
+            buildSectionTitle(context, 'Steps'),
+            buildContainer(
+              ListView.builder(
+                itemBuilder: (context, index) => Column(
+                  children: [
+                    ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        child: Text('# ${index + 1}'),
                       ),
-                      const Divider(),
-                    ],
-                  ),
-                  itemCount: meal.steps.length,
+                      title: Text(meal.steps[index]),
+                    ),
+                    const Divider(),
+                  ],
                 ),
-              )
-            ],
-          ),
-        ));
+                itemCount: meal.steps.length,
+              ),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        // child: Icon(
+        //   Icons.delete,
+        //   color: Theme.of(context).colorScheme.primary,
+        // ),
+        // onPressed: () => Navigator.of(context).pop(mealId),
+        child: Icon(
+          Icons.favorite,
+          color: isMealFavorite(mealId) ? Theme.of(context).colorScheme.primary : Colors.white,
+        ),
+        onPressed: () => toggleFavorite(mealId),
+      ),
+    );
   }
 }
