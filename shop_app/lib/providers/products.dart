@@ -1,9 +1,11 @@
+// Flutter imports:
 import 'package:flutter/material.dart';
-import 'package:shop_app/providers/product.dart';
+
+// Project imports:
+import 'product.dart';
 
 class Products with ChangeNotifier {
-  // ignore: prefer_final_fields
-  List<Product> _items = [
+  final List<Product> _items = [
     Product(
       id: 'p1',
       title: 'Red Shirt',
